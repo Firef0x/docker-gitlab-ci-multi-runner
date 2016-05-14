@@ -22,6 +22,7 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv E1DD270288B4E60
  && chmod 0755 /usr/local/bin/gitlab-ci-multi-runner \
  && adduser --disabled-login --gecos 'GitLab CI Runner' ${GITLAB_CI_MULTI_RUNNER_USER} \
  && sudo -HEu ${GITLAB_CI_MULTI_RUNNER_USER} ln -sf ${GITLAB_CI_MULTI_RUNNER_DATA_DIR}/.ssh ${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.ssh \
+ && gpasswd -a ${GITLAB_CI_MULTI_RUNNER_USER} docker \
  && rm -rf /var/lib/apt/lists/*
 
 RUN set -ex \
