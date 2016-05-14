@@ -3,10 +3,10 @@ GitlabCIMultiRunner:
   volumes:
     - /srv/docker/gitlab-runner:/home/gitlab_ci_multi_runner/data
   environment:
-    - CI_SERVER_URL=http://192.168.1.230/ci
+    - CI_SERVER_URL=http://14.23.118.162:8230/ci
     - RUNNER_TOKEN=5dskzYXPsVLMwYPopXqN
-    - RUNNER_DESCRIPTION="Docker & Node.js Runner"
-    - DOCKER_DAEMON_ARGS="--insecure-registry 14.23.118.162:3005"
+    - RUNNER_DESCRIPTION=Docker & Node.js Runner
+    - DOCKER_DAEMON_ARGS=--insecure-registry 14.23.118.162:3005
     - RUNNER_EXECUTOR=shell
   restart: always
   privileged: true

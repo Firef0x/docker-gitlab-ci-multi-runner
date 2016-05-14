@@ -76,7 +76,7 @@ if [[ -z ${1} ]]; then
   generate_ssh_deploy_keys
   grant_access_to_docker_socket
   configure_ci_runner
-  DOCKER_DAEMON_ARGS="to_be_filled" wrapdocker
+  wrapdocker &
 
   start-stop-daemon --start \
     --chuid ${GITLAB_CI_MULTI_RUNNER_USER}:${GITLAB_CI_MULTI_RUNNER_USER} \

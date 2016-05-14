@@ -45,12 +45,10 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
  && tar -xJf "node-v$NODE_VERSION-linux-x64.tar.xz" -C /usr/local --strip-components=1 \
  && rm "node-v$NODE_VERSION-linux-x64.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt
 
-RUN npm install -g nrm \
- && nrm use taobao
-
 COPY entrypoint.sh /sbin/entrypoint.sh
-RUN sed -i 's/to_be_filled/${DOCKER_DAEMON_ARGS}/' /sbin/entrypoint.sh \
- && chmod 755 /sbin/entrypoint.sh
+RUN chmod 755 /sbin/entrypoint.sh \
+ && npm install -g nrm \
+ && nrm use taobao
 
 VOLUME ["${GITLAB_CI_MULTI_RUNNER_DATA_DIR}"]
 WORKDIR "${GITLAB_CI_MULTI_RUNNER_HOME_DIR}"
