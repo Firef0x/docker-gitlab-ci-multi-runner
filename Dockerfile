@@ -3,7 +3,8 @@ MAINTAINER Firef0x
 
 ENV GITLAB_CI_MULTI_RUNNER_VERSION=1.1.3 \
     GITLAB_CI_MULTI_RUNNER_USER=gitlab_ci_multi_runner \
-    GITLAB_CI_MULTI_RUNNER_HOME_DIR="/home/gitlab_ci_multi_runner"
+    GITLAB_CI_MULTI_RUNNER_HOME_DIR="/home/gitlab_ci_multi_runner" \
+    DOCKER_DATA_DIR="/var/lib/docker"
 ENV GITLAB_CI_MULTI_RUNNER_DATA_DIR="${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/data"
 ENV NPM_CONFIG_LOGLEVEL info
 ENV NODE_VERSION 6.1.0
@@ -51,6 +52,6 @@ RUN chmod 755 /sbin/entrypoint.sh \
  && npm install -g nrm \
  && nrm use taobao
 
-VOLUME ["${GITLAB_CI_MULTI_RUNNER_DATA_DIR}"]
+VOLUME ["${GITLAB_CI_MULTI_RUNNER_DATA_DIR}", "${DOCKER_DATA_DIR}"]
 WORKDIR "${GITLAB_CI_MULTI_RUNNER_HOME_DIR}"
 ENTRYPOINT ["/sbin/entrypoint.sh"]
