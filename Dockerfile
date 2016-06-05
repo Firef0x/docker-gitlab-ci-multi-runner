@@ -23,11 +23,12 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv E1DD270288B4E60
  && adduser --disabled-login --gecos 'GitLab CI Runner' ${GITLAB_CI_MULTI_RUNNER_USER} \
  && sudo -HEu ${GITLAB_CI_MULTI_RUNNER_USER} ln -sf ${GITLAB_CI_MULTI_RUNNER_DATA_DIR}/.ssh ${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.ssh \
  && gpasswd -a ${GITLAB_CI_MULTI_RUNNER_USER} docker \
+ && gpasswd -a ${GITLAB_CI_MULTI_RUNNER_USER} sudo \
  && rm -rf /var/lib/apt/lists/*
 
-RUN curl -sSL https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash \
- && sudo /bin/bash -c "echo \"[[ -s \${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.nvm/nvm.sh  ]] && . \${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.nvm/nvm.sh\" >> /etc/profile.d/npm.sh" \
- && echo "[[ -s ${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.nvm/nvm.sh  ]] && . ${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.nvm/nvm.sh" >> ${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.bashrc
+RUN sudo -HEu ${GITLAB_CI_MULTI_RUNNER_USER} curl -sSL https://raw.githubusercontent.com/creationix/nvm/master/install.sh | sudo -HEu ${GITLAB_CI_MULTI_RUNNER_USER} NVM_DIR="${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.nvm" bash \
+ && sudo -HEu ${GITLAB_CI_MULTI_RUNNER_USER} echo "[[ -s ${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.nvm/nvm.sh  ]] && . ${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.nvm/nvm.sh" >> ${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.bashrc \
+ && bash -c "echo \"[[ -s \${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.nvm/nvm.sh  ]] && . \${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.nvm/nvm.sh\" >> /etc/profile.d/npm.sh"
 
 COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod 755 /sbin/entrypoint.sh
