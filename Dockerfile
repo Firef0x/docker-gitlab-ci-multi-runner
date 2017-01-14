@@ -1,7 +1,7 @@
 FROM gitlab/dind:latest
 MAINTAINER Firef0x <Firefgx {aT} gmail.com>
 
-ENV GITLAB_CI_MULTI_RUNNER_VERSION=1.1.3 \
+ENV GITLAB_CI_MULTI_RUNNER_VERSION=1.1.4 \
     GITLAB_CI_MULTI_RUNNER_USER=gitlab_ci_multi_runner \
     GITLAB_CI_MULTI_RUNNER_HOME_DIR="/home/gitlab_ci_multi_runner" \
     DOCKER_DATA_DIR="/var/lib/docker" \

@@ -1,5 +1,5 @@
 GitlabCIMultiRunner:
-  image: firef0x/gitlab-ci-multi-runner:1.1.3-2f
+  image: firef0x/gitlab-ci-multi-runner:1.1.4-6f
   volumes:
     - /srv/docker/gitlab-runner/data:/home/gitlab_ci_multi_runner/data
     - /srv/docker/gitlab-runner/docker:/var/lib/docker
