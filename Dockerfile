@@ -7,7 +7,7 @@ ENV GITLAB_CI_MULTI_RUNNER_VERSION=1.1.4 \
     DOCKER_DATA_DIR="/var/lib/docker" \
     GITLAB_CI_MULTI_RUNNER_DATA_DIR="${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/data" \
     PATH=${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.nvm/bin:$PATH \
-    GOSU_VERSION=1.9
+    GOSU_VERSION=1.10
 
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv E1DD270288B4E6030699E45FA1715D88E1DF1F24 \
  && echo 'APT::Install-Recommends 0;' >> /etc/apt/apt.conf.d/01norecommends \
@@ -36,9 +36,11 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv E1DD270288B4E60
  && gpasswd -a ${GITLAB_CI_MULTI_RUNNER_USER} docker \
  && rm -rf /var/lib/apt/lists/*
 
-RUN gosu ${GITLAB_CI_MULTI_RUNNER_USER} curl -sSL https://raw.githubusercontent.com/creationix/nvm/master/install.sh | NVM_DIR="${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.nvm" gosu ${GITLAB_CI_MULTI_RUNNER_USER} bash \
+COPY install.sh ${GITLAB_CI_MULTI_RUNNER_USER}/install.sh
+RUN chmod 755 ${GITLAB_CI_MULTI_RUNNER_USER}/install.sh && gosu ${GITLAB_CI_MULTI_RUNNER_USER} bash ${GITLAB_CI_MULTI_RUNNER_USER}/install.sh \
  && gosu ${GITLAB_CI_MULTI_RUNNER_USER} echo "[[ -s ${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.nvm/nvm.sh  ]] && . ${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.nvm/nvm.sh" >> ${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.bashrc \
- && bash -c "echo \"[[ -s \${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.nvm/nvm.sh  ]] && . \${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.nvm/nvm.sh\" >> /etc/profile.d/npm.sh"
+ && bash -c "echo \"[[ -s \${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.nvm/nvm.sh  ]] && . \${GITLAB_CI_MULTI_RUNNER_HOME_DIR}/.nvm/nvm.sh\" >> /etc/profile.d/npm.sh" \
+ && rm -f ${GITLAB_CI_MULTI_RUNNER_USER}/install.sh
 
 COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod 755 /sbin/entrypoint.sh
